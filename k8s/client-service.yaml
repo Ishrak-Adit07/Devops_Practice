@@ -1,0 +1,14 @@
+# k8s/client-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: client
+spec:
+  type: NodePort  # or LoadBalancer if you're using a cloud provider
+  ports:
+    - port: 5173
+      targetPort: 5173
+      protocol: TCP
+      nodePort: 30001  # Optional: specify a node port
+  selector:
+    app: client
