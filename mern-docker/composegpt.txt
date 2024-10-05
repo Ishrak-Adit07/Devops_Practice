@@ -1,0 +1,34 @@
+version: "3.8"
+
+services:
+  web:
+    depends_on:
+      - api
+    build: ./client
+    ports:
+      - 5173:5173
+    environment:
+      VITE_API_URL: http://localhost:8000
+    volumes:
+      - ./client:/app # To sync files between host and container
+
+  api:
+    depends_on:
+      - db
+    build: ./server
+    ports:
+      - 8000:8000
+    environment:
+      DB_URL: mongodb://db/dfsa
+    volumes:
+      - ./server:/app # To sync files between host and container
+
+  db:
+    image: mongo:latest
+    ports:
+      - 27017:27017
+    volumes:
+      - dfsa:/data/db
+
+volumes:
+  dfsa:
