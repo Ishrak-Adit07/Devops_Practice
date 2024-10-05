@@ -1,0 +1,6 @@
+kubectl apply -f mongo-pvc.yaml
+kubectl apply -f db-deployment.yaml
+kubectl apply -f api-deployment.yaml
+kubectl apply -f api-service.yaml
+kubectl apply -f client-deployment.yaml
+kubectl apply -f client-service.yaml
