@@ -1,13 +1,26 @@
+# Use Node.js as the base image
 FROM node:20-alpine
+
+# Optional: Create a non-root user for security
 # RUN addgroup app && adduser -S -G app app
-# USER app
+
+# Set the working directory
 WORKDIR /app
-# ENV CHOKIDAR_USEPOLLING=true
+
+# Copy package.json and package-lock.json (if available)
 COPY package*.json ./
-# USER root
-# RUN chown -R app:app .
-# USER app
-RUN npm install
+
+# Install dependencies
+RUN npm install --silent
+
+# Copy the rest of the application code
 COPY . .
+
+# Expose the port your backend listens on
 EXPOSE 8000
-CMD npm start
+
+# Set environment to production
+ENV NODE_ENV=production
+
+# Start the backend server
+CMD ["npm", "start"]
