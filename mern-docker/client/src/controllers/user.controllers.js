@@ -9,7 +9,7 @@ const registerUser = async (name, password, confirmPassword) => {
   }
 
   try {
-    const registerResponse = await fetch("/api/user/register", {
+    const registerResponse = await fetch(`${import.meta.env.VITE_API_URL}/api/user/register`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -39,7 +39,7 @@ const loginUser = async (name, password) => {
   }
 
   try {
-    const loginResponse = await fetch("/api/user/login", {
+    const loginResponse = await fetch(`${import.meta.env.VITE_API_URL}/api/user/login`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

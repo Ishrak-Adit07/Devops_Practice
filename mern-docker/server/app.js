@@ -1,6 +1,14 @@
 import express from "express";
 const app = express();
 
+import cors from 'cors';
+
+app.use(cors({
+  origin: 'http://localhost:5173',
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  allowedHeaders: ['Content-Type'],
+}));
+
 // For parsing json
 app.use(express.json());
 
