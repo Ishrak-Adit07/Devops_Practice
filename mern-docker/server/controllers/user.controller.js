@@ -9,7 +9,6 @@ const createToken = (_id) => {
 
 const registerUser = async (req, res) => {
   const { name, password } = req.body;
-  console.log(name);
 
   try {
     if (!name || !password) {
