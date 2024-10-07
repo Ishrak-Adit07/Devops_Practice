@@ -1,0 +1,8 @@
+minikube start --driver=docker
+minikube status
+kubectl get nodes
+
+minikube stop
+minikube delete
+
+minikube start
