@@ -71,7 +71,7 @@ spec:
             - containerPort: 5173
           env:
             - name: VITE_API_URL
-              value: "http://backend-service:8000"  # Use the service name for internal communication
+              value: "http://localhost:8000"  # Use the service name for internal communication
       # Optional: Add resource limits/requests if needed
 ---
 # client-service
