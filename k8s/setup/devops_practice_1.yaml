@@ -1,0 +1,91 @@
+# backend-deploy
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+        - name: backend
+          image: ishrakadit07/mern-docker-api
+          ports:
+            - containerPort: 8000
+          env:
+            - name: MONGODB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: mongo-atlas-secret
+                  key: mongo-user
+            - name: MONGODB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mongo-atlas-secret
+                  key: mongo-password
+            - name: MONGODB_CLUSTER_NAME
+              value: "cluster-for-ishrak"
+            - name: MONGODB_APP_NAME
+              value: "cluster-for-ishrak"
+---
+# backend-service
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-service
+spec:
+  selector:
+    app: backend
+  ports:
+    - protocol: TCP
+      port: 8000 
+      targetPort: 8000     
+  type: ClusterIP 
+---
+# client-deploy
+# k8s/client-deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: client
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: client
+  template:
+    metadata:
+      labels:
+        app: client
+    spec:
+      containers:
+        - name: client
+          image: ishrakadit07/mern-docker-web
+          ports:
+            - containerPort: 5173
+          env:
+            - name: VITE_API_URL
+              value: "http://backend-service:8000"  # Use the service name for internal communication
+      # Optional: Add resource limits/requests if needed
+---
+# client-service
+# k8s/client-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: client
+spec:
+  type: NodePort  # or LoadBalancer if you're using a cloud provider
+  ports:
+    - port: 5173
+      targetPort: 5173
+      protocol: TCP
+      nodePort: 30001  # Optional: specify a node port
+  selector:
+    app: client
