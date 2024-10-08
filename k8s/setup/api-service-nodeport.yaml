@@ -1,0 +1,14 @@
+# backend-service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-service
+spec:
+  type: NodePort  # Change this from ClusterIP to NodePort
+  selector:
+    app: backend
+  ports:
+    - protocol: TCP
+      port: 8000      # The port on which the service is exposed
+      targetPort: 8000 # The port in the container
+      nodePort: 30002  # Optional: specify a NodePort if you want a fixed port (range: 30000-32767)
