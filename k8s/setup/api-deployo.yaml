@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: backend-deploy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: backend
+  template:
+    metadata:
+      labels:
+        app: backend
+    spec:
+      containers:
+        - name: backend
+          image: <your-backend-image>
+          ports:
+            - containerPort: 8000
+          env:
+            - name: MONGODB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: mongo-atlas-secret
+                  key: mongo-user
+            - name: MONGODB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mongo-atlas-secret
+                  key: mongo-password
+            - name: MONGODB_CLUSTER_NAME
+              value: "cluster-for-ishrak"
+            - name: MONGODB_APP_NAME
+              value: "cluster-for-ishrak"
