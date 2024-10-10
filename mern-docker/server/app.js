@@ -3,20 +3,26 @@ const app = express();
 
 import cors from 'cors';
 
-const allowedOrigins = [
-  'http://localhost:5173',       // For local development
-  'http://client:5173',          // For Kubernetes deployment
-];
+// const allowedOrigins = [
+//   'http://localhost:5173',       // For local development
+//   'http://client:5173',          // For Kubernetes deployment
+// ];
+
+// app.use(cors({
+//   origin: function(origin, callback) {
+//     // Allow requests with no origin (like mobile apps or curl requests)
+//     if (!origin || allowedOrigins.indexOf(origin) !== -1) {
+//       callback(null, origin);
+//     } else {
+//       callback(new Error('Not allowed by CORS'));
+//     }
+//   },
+//   methods: ['GET', 'POST', 'PUT', 'DELETE'],
+//   allowedHeaders: ['Content-Type'],
+// }));
 
 app.use(cors({
-  origin: function(origin, callback) {
-    // Allow requests with no origin (like mobile apps or curl requests)
-    if (!origin || allowedOrigins.indexOf(origin) !== -1) {
-      callback(null, origin);
-    } else {
-      callback(new Error('Not allowed by CORS'));
-    }
-  },
+  origin: '*', // Allow access from any origin
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
   allowedHeaders: ['Content-Type'],
 }));
