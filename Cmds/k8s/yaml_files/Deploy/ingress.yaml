@@ -1,8 +1,8 @@
-# ingress.yaml
+# ingress-resource
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: mern-ingress
+  name: app-ingress
   annotations:
     nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
@@ -21,6 +21,6 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: client-service
+                name: client
                 port:
                   number: 5173
