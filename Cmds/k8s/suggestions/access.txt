@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: backend-service
+spec:
+  selector:
+    app: backend
+  ports:
+    - protocol: TCP
+      port: 8000 
+      targetPort: 8000
+  type: LoadBalancer  # Change service type to LoadBalancer
+
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: client
+spec:
+  type: NodePort
+  ports:
+    - port: 5173
+      targetPort: 5173
+      protocol: TCP
+      nodePort: 30001  # Node port for external access
+  selector:
+    app: client
+
+
+kubectl get nodes -o wide
