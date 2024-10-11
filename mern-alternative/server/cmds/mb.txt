@@ -1,0 +1,2 @@
+For RabitMQ-
+npm install amqplib
