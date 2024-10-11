@@ -1,0 +1,24 @@
+doctl version
+doctl kubernetes cluster kubeconfig save 753ca0e2-704c-4f40-9eb4-52418ecf15ac
+
+doctl kubernetes cluster kubeconfig show <753ca0e2-704c-4f40-9eb4-52418ecf15ac|devops1-cluster>
+doctl kubernetes cluster kubeconfig show 753ca0e2-704c-4f40-9eb4-52418ecf15ac
+doctl kubernetes cluster kubeconfig show devops1-cluster
+
+doctl kubernetes cluster get devops1-cluster
+
+kubectl config use-context do-sgp1-devops1-cluster
+kubectl config current-context
+kubectl apply -f mongo-atlas-secret.yaml
+
+doctl kubernetes cluster add-on install ingress --cluster-id 753ca0e2-704c-4f40-9eb4-52418ecf15ac
+
+Running ingress with kubectl - 
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/cloud/deploy.yaml
+kubectl get pods -n ingress-nginx
+kubectl get services -n ingress-nginx
+
+Deleting ingress - 
+kubectl delete deployment ingress-nginx-controller -n ingress-nginx
+kubectl delete namespace ingress-nginx
+kubectl delete ingress <your-ingress-name> -n <namespace>
