@@ -33,6 +33,18 @@ spec:
               value: "cluster-for-ishrak"
             - name: MONGODB_APP_NAME
               value: "cluster-for-ishrak"
+          livenessProbe:
+            httpGet:
+              path: /health  # Adjust the path according to your health check endpoint
+              port: 8000
+            initialDelaySeconds: 10
+            periodSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /health  # Adjust the path according to your health check endpoint
+              port: 8000
+            initialDelaySeconds: 10
+            periodSeconds: 5
 ---
 # backend-service
 apiVersion: v1
@@ -70,8 +82,19 @@ spec:
             - containerPort: 5173
           env:
             - name: VITE_API_URL
-              value: "http://146.190.4.191:8000"  # Use the service name for internal communication
-      # Optional: Add resource limits/requests if needed
+              value: "http://backend-service:8000"  # Use the service name for internal communication
+          livenessProbe:
+            httpGet:
+              path: /health  # Adjust the path according to your health check endpoint
+              port: 5173
+            initialDelaySeconds: 10
+            periodSeconds: 5
+          readinessProbe:
+            httpGet:
+              path: /health  # Adjust the path according to your health check endpoint
+              port: 5173
+            initialDelaySeconds: 10
+            periodSeconds: 5
 ---
 # client-service
 apiVersion: v1
@@ -100,5 +123,20 @@ spec:
     name: backend-deploy
   minReplicas: 1        
   maxReplicas: 10        
+  targetCPUUtilizationPercentage: 80  # Scale when CPU usage exceeds 80%
+  targetMemoryUtilizationPercentage: 75  # Scale when memory usage exceeds 75%
+---
+# Horizontal Pod Autoscaler for client-deploy
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: client-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: client 
+  minReplicas: 1       
+  maxReplicas: 10    
   targetCPUUtilizationPercentage: 80  # Scale when CPU usage exceeds 80%
   targetMemoryUtilizationPercentage: 75  # Scale when memory usage exceeds 75%
