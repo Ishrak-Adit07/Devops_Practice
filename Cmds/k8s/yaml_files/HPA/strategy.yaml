@@ -8,6 +8,11 @@ spec:
   selector:
     matchLabels:
       app: backend
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
   template:
     metadata:
       labels:
@@ -16,6 +21,7 @@ spec:
       containers:
         - name: backend
           image: ishrakadit07/mern-docker-api
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8000
           env:
@@ -33,6 +39,13 @@ spec:
               value: "cluster-for-ishrak"
             - name: MONGODB_APP_NAME
               value: "cluster-for-ishrak"
+          resources:               # Add this block for resource requests and limits
+            requests:
+              cpu: "200m"          # CPU request, adjust based on your app's needs
+              memory: "256Mi"      # Memory request
+            limits:
+              cpu: "500m"          # CPU limit
+              memory: "512Mi"      # Memory limit
 ---
 # backend-service
 apiVersion: v1
@@ -58,6 +71,11 @@ spec:
   selector:
     matchLabels:
       app: client
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
   template:
     metadata:
       labels:
@@ -66,11 +84,19 @@ spec:
       containers:
         - name: client
           image: ishrakadit07/mern-docker-web
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 5173
           env:
             - name: VITE_API_URL
-              value: "http://backend-service:8000"
+              value: "http://144.126.240.66:8000"
+          resources:               # Add this block for resource requests and limits
+            requests:
+              cpu: "200m"          # CPU request
+              memory: "256Mi"      # Memory request
+            limits:
+              cpu: "500m"          # CPU limit
+              memory: "512Mi"      # Memory limit
 ---
 # client-service
 apiVersion: v1
