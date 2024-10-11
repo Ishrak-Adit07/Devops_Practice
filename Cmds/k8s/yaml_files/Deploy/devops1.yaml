@@ -45,11 +45,10 @@ spec:
   ports:
     - protocol: TCP
       port: 8000 
-      targetPort: 8000     
-  type: ClusterIP 
+      targetPort: 8000
+  type: LoadBalancer
 ---
 # client-deploy
-# k8s/client-deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -71,21 +70,20 @@ spec:
             - containerPort: 5173
           env:
             - name: VITE_API_URL
-              value: "http://localhost:8000"  # Use the service name for internal communication
+              value: "http://146.190.4.191:8000"  # Use the service name for internal communication
       # Optional: Add resource limits/requests if needed
 ---
 # client-service
-# k8s/client-service.yaml
 apiVersion: v1
 kind: Service
 metadata:
   name: client
 spec:
-  type: NodePort  # or LoadBalancer if you're using a cloud provider
+  type: NodePort
   ports:
     - port: 5173
       targetPort: 5173
       protocol: TCP
-      nodePort: 30001  # Optional: specify a node port
+      nodePort: 30001
   selector:
     app: client

@@ -1,23 +1,34 @@
-# k8s/api-deployment.yaml
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: api
+  name: backend-deploy
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: api
+      app: backend
   template:
     metadata:
       labels:
-        app: api
+        app: backend
     spec:
       containers:
-        - name: api
-          image: <your-api-image-name> # Update with your API image name
+        - name: backend
+          image: ishrakadit07/mern-docker-api
           ports:
             - containerPort: 8000
           env:
-            - name: DB_URL
-              value: "mongodb://db:27017/dfsa"  # Use the service name for internal communication
+            - name: MONGODB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: mongo-atlas-secret
+                  key: mongo-user
+            - name: MONGODB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mongo-atlas-secret
+                  key: mongo-password
+            - name: MONGODB_CLUSTER_NAME
+              value: "cluster-for-ishrak"
+            - name: MONGODB_APP_NAME
+              value: "cluster-for-ishrak"

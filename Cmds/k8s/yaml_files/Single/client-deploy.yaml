@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: client
-          image: <your-client-image-name> # Update with your client image name
+          image: ishrakadit07/mern-docker-web
           ports:
             - containerPort: 5173
           env:
