@@ -1,0 +1,12 @@
+Installing ingress controller-
+kubectl apply -f https://raw.githubusercontent.com/kubernetes/ingress-nginx/main/deploy/static/provider/cloud/deploy.yaml
+
+Checking ingress controller-
+kubectl get pods -n ingress-nginx
+kubectl get svc -n ingress-nginx
+
+Apply:
+kubectl apply -f api-gateway.yaml
+
+Test:
+kubectl get svc -n ingress-nginx
