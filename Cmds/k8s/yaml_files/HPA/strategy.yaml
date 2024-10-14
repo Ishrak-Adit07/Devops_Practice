@@ -124,7 +124,7 @@ spec:
     kind: Deployment
     name: backend-deploy
   minReplicas: 1        
-  maxReplicas: 10        
+  maxReplicas: 10       
   targetCPUUtilizationPercentage: 80  # Scale when CPU usage exceeds 80%
   #targetMemoryUtilizationPercentage: 75  # Scale when memory usage exceeds 75%
 ---
